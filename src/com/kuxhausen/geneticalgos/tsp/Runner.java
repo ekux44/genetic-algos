@@ -24,11 +24,11 @@ public class Runner {
 			
 			
 			HillClimber fool = new HillClimber(false);
-			Chromosome foolishBest = fool.climb(1000000000l, c, cList, 50000, .95, 20, 1.05);
+			Chromosome foolishBest = fool.climb(1000000000l, c, cList, 5000 * cList.numCities, .94, 20, 1.05);
 			System.out.println("foolish HC fitness "+cList.getFitness(foolishBest) +" for length "+cList.numCities);
 			
 			HillClimber simA = new HillClimber(true);
-			Chromosome simuAnnealBest = simA.climb(1000000000l, c, cList, 50000, .95, 20, 1.05);
+			Chromosome simuAnnealBest = simA.climb(1000000000l, c, cList, 5000 * cList.numCities, .94, 20, 1.05);
 			System.out.println("SA fitness "+cList.getFitness(simuAnnealBest) +" for length "+cList.numCities);
 		
 		} catch (FileNotFoundException e) {
