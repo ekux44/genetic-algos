@@ -19,11 +19,10 @@ public class Runner {
 		try {
 			CityList cList = DataParser.parse(filename);
 		
-			
-			for(int i = 0 ; i< cList.numCities; i++){
-				System.out.println(i+" "+cList.cityX[i]+" "+cList.cityY[i]);
+			for(int i = 0; i< 10; i++){
+				Chromosome c = new Chromosome(cList.numCities);
+				System.out.println("rand fitness "+cList.getFitness(c) +" for length "+cList.numCities);
 			}
-		
 		
 		} catch (FileNotFoundException e) {
 			System.out.println("File Not Found");
