@@ -30,4 +30,23 @@ public class Chromosome {
 	      route[i] = a;
 	    }
 	}
+	
+	/**
+	 * initializes the route with prior route
+	 * @param priorRoute
+	 */
+	public Chromosome(int[] priorRoute){
+		route = priorRoute.clone();
+	}
+	
+	public Chromosome doublePointChrossover(){
+		Chromosome child = new Chromosome(route);
+		int a = (int)(Math.random() * child.route.length);
+		int b = (int)(Math.random() * child.route.length);
+		
+		int swap = child.route[a];
+		child.route[a] = child.route[b];
+		child.route[b] = swap;
+		return child;
+	}
 }

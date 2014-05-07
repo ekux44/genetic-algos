@@ -19,10 +19,17 @@ public class Runner {
 		try {
 			CityList cList = DataParser.parse(filename);
 		
-			for(int i = 0; i< 10; i++){
-				Chromosome c = new Chromosome(cList.numCities);
-				System.out.println("rand fitness "+cList.getFitness(c) +" for length "+cList.numCities);
-			}
+			Chromosome c = new Chromosome(cList.numCities);
+			System.out.println("rand fitness "+cList.getFitness(c) +" for length "+cList.numCities);
+			
+			
+			HillClimber fool = new HillClimber(false);
+			Chromosome foolishBest = fool.climb(1000000000l, c, cList, 50000, .95, 20, 1.05);
+			System.out.println("foolish HC fitness "+cList.getFitness(foolishBest) +" for length "+cList.numCities);
+			
+			HillClimber simA = new HillClimber(true);
+			Chromosome simuAnnealBest = simA.climb(1000000000l, c, cList, 50000, .95, 20, 1.05);
+			System.out.println("SA fitness "+cList.getFitness(simuAnnealBest) +" for length "+cList.numCities);
 		
 		} catch (FileNotFoundException e) {
 			System.out.println("File Not Found");
