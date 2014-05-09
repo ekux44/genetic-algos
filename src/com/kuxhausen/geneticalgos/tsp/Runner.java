@@ -19,17 +19,17 @@ public class Runner {
 		try {
 			CityList cList = DataParser.parse(filename);
 		
-			Chromosome c = new Chromosome(cList.numCities);
-			System.out.println("rand fitness "+cList.getFitness(c) +" for length "+cList.numCities);
+			Chromosome c = new Chromosome(cList.numCities, cList);
+			System.out.println("rand fitness "+c.getFitness() +" for length "+cList.numCities);
 			
 			
 			HillClimber fool = new HillClimber(false);
-			Chromosome foolishBest = fool.climb(1000000000l, c, cList, 5000 * cList.numCities, .94, 20, 1.05);
-			System.out.println("foolish HC fitness "+cList.getFitness(foolishBest) +" for length "+cList.numCities);
+			Chromosome foolishBest = fool.climb(1000000000l, c, 5000 * cList.numCities, .94, 20, 1.05);
+			System.out.println("foolish HC fitness "+foolishBest.getFitness() +" for length "+cList.numCities);
 			
 			HillClimber simA = new HillClimber(true);
-			Chromosome simuAnnealBest = simA.climb(1000000000l, c, cList, 5000 * cList.numCities, .94, 20, 1.05);
-			System.out.println("SA fitness "+cList.getFitness(simuAnnealBest) +" for length "+cList.numCities);
+			Chromosome simuAnnealBest = simA.climb(1000000000l, c, 5000 * cList.numCities, .94, 20, 1.05);
+			System.out.println("SA fitness "+simuAnnealBest.getFitness() +" for length "+cList.numCities);
 		
 		} catch (FileNotFoundException e) {
 			System.out.println("File Not Found");

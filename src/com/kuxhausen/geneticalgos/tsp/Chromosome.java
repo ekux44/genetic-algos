@@ -9,11 +9,16 @@ public class Chromosome {
 	 */
 	int[] route;
 	
+	private CityList cl;
+	private double fitnessCache;
+	private boolean fitnessCacheValidity;
+	
 	/*
 	 * initializes the route to a random ordering
 	 */
-	public Chromosome(int length){
+	public Chromosome(int length, CityList cList){
 		route = new int[length];
+		cl = cList;
 		
 		// Initially populate with known city ordering
 		for(int i = 0; i< length; i++)
@@ -35,12 +40,13 @@ public class Chromosome {
 	 * initializes the route with prior route
 	 * @param priorRoute
 	 */
-	public Chromosome(int[] priorRoute){
+	public Chromosome(int[] priorRoute, CityList cList){
 		route = priorRoute.clone();
+		cl = cList;
 	}
 	
 	public Chromosome doublePointChrossover(){
-		Chromosome child = new Chromosome(route);
+		Chromosome child = new Chromosome(route, cl);
 		int a = (int)(Math.random() * child.route.length);
 		int b = (int)(Math.random() * child.route.length);
 		
@@ -48,5 +54,30 @@ public class Chromosome {
 		child.route[a] = child.route[b];
 		child.route[b] = swap;
 		return child;
+	}
+	
+	public double getFitness(){
+		if(!fitnessCacheValidity){
+			fitnessCache = calculateFitness();
+		}
+		return fitnessCache;
+	}
+	
+	public void invalidateCache(){
+		fitnessCacheValidity = false;
+	}
+	
+	/**
+	 * @param Chromosome whose fitness is to be calculated
+	 * @return fitness based on total distanced in Chromosome's routes
+	 */
+	private double calculateFitness(){
+		double distanceTraveled = 0;
+		for(int i = 1; i< cl.numCities; i++){
+			int a = route[i-1];
+			int b = route[i];
+			distanceTraveled+= Math.sqrt(Math.pow(cl.cityX[b]-cl.cityX[a], 2)+Math.pow(cl.cityY[b]-cl.cityY[a], 2));
+		}
+		return distanceTraveled;
 	}
 }

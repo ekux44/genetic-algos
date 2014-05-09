@@ -6,17 +6,17 @@ public class HillClimber {
 	public HillClimber(boolean isSimulatedAnnealingMode){
 		mSimulatedAnnealing = isSimulatedAnnealingMode;
 	}
-	public Chromosome climb(long timeAllocated, Chromosome initialS, CityList cl,  double initialTemp, double alpha, double initalNumInnerLoops, double beta){
+	public Chromosome climb(long timeAllocated, Chromosome initialS, double initialTemp, double alpha, double initalNumInnerLoops, double beta){
 		long stopTime = System.nanoTime()+timeAllocated;
 		Chromosome s = initialS;
 		double temp = initialTemp;
 		double numInnerLoops = initalNumInnerLoops;
-		double cachedFitness = cl.getFitness(s);
+		double cachedFitness = s.getFitness();
 		
 		while(System.nanoTime()<stopTime){
 			for(int i = 0; i<numInnerLoops; i++){
 				Chromosome newS = s.doublePointChrossover();
-				double newFitness = cl.getFitness(newS);
+				double newFitness = newS.getFitness();
 				if(!mSimulatedAnnealing
 						|| newFitness<cachedFitness
 						|| Math.random()<Math.pow(Math.E, (cachedFitness - newFitness)/temp)){
