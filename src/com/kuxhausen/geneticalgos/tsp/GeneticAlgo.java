@@ -53,9 +53,9 @@ public class GeneticAlgo {
 	}
 	
 	/**
-	 * 
-	 * @param parrent Chromosome
-	 * @return arrayList with duplicates of those selected from parent
+	 * @param parent sorted most fit to least fit
+	 * @param numToSelect
+	 * @return selected Chromosomes, unsorted and with duplicates
 	 */
 	private ArrayList<Chromosome> rouletteSelection(ArrayList<Chromosome> parent, int numToSelect){
 		double fitnessSum = 0;
@@ -83,10 +83,31 @@ public class GeneticAlgo {
 		return selected;
 	}
 	
-	private Chromosome[] rankSelection(){
-		//TOOD implement
+	/**
+	 * @param parent sorted most fit to least fit
+	 * @param numToSelect
+	 * @return selected Chromosomes, unsorted and with duplicates
+	 */
+	private ArrayList<Chromosome> rankSelection(ArrayList<Chromosome> parent, int numToSelect){
+		double totalRank = parent.size()*(parent.size()+1)/2.0;
 		
-		return null;
+		ArrayList<Chromosome> selected = new ArrayList<Chromosome>(numToSelect);
+		//loop to fill the selected list
+		for(int i = 0; i< selected.size(); i++){
+			//the roulette wheel is the size of all combined rank
+			
+			//scan through the parent chromosomes summing rank until the random ranked roulette wheel spot is reached
+			double rouletteSpot = Math.random()*totalRank;
+			double scannedSoFar = 0;
+			for(int j = 0; scannedSoFar<rouletteSpot; j++){
+				scannedSoFar+=parent.size()-j;
+				if(scannedSoFar>=rouletteSpot){
+					//this one selected on the ranked roulette wheel, add to selected
+					selected.set(i, parent.get(j));
+				}
+			}
+		}
+		return selected;
 	}
 	
 }
