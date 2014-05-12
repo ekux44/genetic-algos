@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public class GeneticAlgo {
 	
-	public static final int POP_SIZE = 300;
+	public static final int POP_SIZE = 400;
 	public static final int NUM_ELITE = 4;
 	
 	public Chromosome run(long timeAllocated, CityList cl, Selection s, Mutation m, double mutateRate, Crossover c, double crossoverRate){
