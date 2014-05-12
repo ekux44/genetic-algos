@@ -15,6 +15,7 @@ public class ConfigParser {
 		result.m = Mutation.valueOf(in.nextLine());
 		result.s = Selection.valueOf(in.nextLine());
 		result.c = Crossover.valueOf(in.nextLine());
+		in.close();
 		return result;
 	}
 

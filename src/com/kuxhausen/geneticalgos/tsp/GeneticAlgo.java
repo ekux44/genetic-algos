@@ -76,7 +76,7 @@ public class GeneticAlgo {
 			Collections.sort(population);
 			
 			//print out generational best for debugging/tuning purposes
-			System.out.println(population.get(0).getFitness());
+			//System.out.println(population.get(0).getFitness());
 		}
 		
 		return population.get(0);

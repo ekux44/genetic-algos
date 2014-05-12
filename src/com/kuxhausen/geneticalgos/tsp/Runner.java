@@ -1,6 +1,7 @@
 package com.kuxhausen.geneticalgos.tsp;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 import com.kuxhausen.geneticalgos.tsp.ConfigParser.Config;
 
@@ -24,22 +25,33 @@ public class Runner {
 			Config cf = ConfigParser.parse("data/"+"config.txt");
 			
 			Chromosome c = new Chromosome(cList);
-			System.out.println("rand fitness "+c.getFitness() +" for length "+cList.numCities);
+			//System.out.println("rand fitness "+c.getFitness() +" for length "+cList.numCities);
 			
 			
+			Chromosome[] results = new Chromosome[5];
 			if(cf.st == SolverType.HC){
 				HillClimber fool = new HillClimber(false);
-				Chromosome foolishBest = fool.climb(cf, c, 5000 * cList.numCities, .94, 20, 1.05);
-				System.out.println("foolish HC fitness "+foolishBest.getFitness() +" for length "+cList.numCities);
+				
+				for(int i = 0; i<results.length; i++)
+					results[i] = fool.climb(cf, c, 5000 * cList.numCities, .94, 20, 1.05);
 			} else if(cf.st == SolverType.SA){
 				HillClimber simA = new HillClimber(true);
-				Chromosome simuAnnealBest = simA.climb(cf, c, 5000 * cList.numCities, .94, 20, 1.05);
-				System.out.println("SA fitness "+simuAnnealBest.getFitness() +" for length "+cList.numCities);
+				for(int i = 0; i<results.length; i++)
+					results[i] = simA.climb(cf, c, 5000 * cList.numCities, .94, 20, 1.05);
 			} else if(cf.st == SolverType.GA){
 				GeneticAlgo ga = new GeneticAlgo();
-				Chromosome gaBest = ga.run(cf, cList, .05, .8);
-				System.out.println("GA fitness "+gaBest.getFitness() +" for length "+cList.numCities);
+				for(int i = 0; i<results.length; i++)
+					results[i] = ga.run(cf, cList, .05, .8);
 			}
+			
+			Arrays.sort(results);
+			System.out.println("Best Tour Length " + results[0].getFitness());
+			double sum = 0;
+			for(Chromosome chrom : results)
+				sum+=chrom.getFitness();
+			
+			System.out.println("Average Best Tour Length " + (sum/results.length));
+			
 		} catch (FileNotFoundException e) {
 			System.out.println("File Not Found");
 			
