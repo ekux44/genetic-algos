@@ -16,12 +16,12 @@ public class Chromosome implements Comparable<Chromosome>{
 	/*
 	 * initializes the route to a random ordering
 	 */
-	public Chromosome(int length, CityList cList){
-		route = new int[length];
+	public Chromosome(CityList cList){
+		route = new int[cList.numCities];
 		cl = cList;
 		
 		// Initially populate with known city ordering
-		for(int i = 0; i< length; i++)
+		for(int i = 0; i< cl.numCities; i++)
 			route[i] = i;
 		
 		// Fisher–Yates shuffle to randomize the route
@@ -53,6 +53,23 @@ public class Chromosome implements Comparable<Chromosome>{
 		int swap = child.route[a];
 		child.route[a] = child.route[b];
 		child.route[b] = swap;
+		
+		child.invalidateCache();
+		return child;
+	}
+	
+	public Chromosome tripplePointChrossover(){
+		Chromosome child = new Chromosome(route, cl);
+		int a = (int)(Math.random() * child.route.length);
+		int b = (int)(Math.random() * child.route.length);
+		int c = (int)(Math.random() * child.route.length);
+		
+		int swap = child.route[a];
+		child.route[a] = child.route[b];
+		child.route[b] = child.route[c];
+		child.route[c] = swap;
+		
+		child.invalidateCache();
 		return child;
 	}
 	

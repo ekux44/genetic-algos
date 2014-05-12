@@ -19,20 +19,20 @@ public class Runner {
 		try {
 			CityList cList = DataParser.parse(filename);
 		
-			Chromosome c = new Chromosome(cList.numCities, cList);
+			Chromosome c = new Chromosome(cList);
 			System.out.println("rand fitness "+c.getFitness() +" for length "+cList.numCities);
 			
-			
+			/*
 			HillClimber fool = new HillClimber(false);
-			Chromosome foolishBest = fool.climb(1000000000l, c, 5000 * cList.numCities, .94, 20, 1.05);
+			Chromosome foolishBest = fool.climb(3000000000l, c, 5000 * cList.numCities, .94, 20, 1.05);
 			System.out.println("foolish HC fitness "+foolishBest.getFitness() +" for length "+cList.numCities);
 			
 			HillClimber simA = new HillClimber(true);
-			Chromosome simuAnnealBest = simA.climb(100000000l, c, 5000 * cList.numCities, .94, 20, 1.05);
+			Chromosome simuAnnealBest = simA.climb(3000000000l, c, 5000 * cList.numCities, .94, 20, 1.05);
 			System.out.println("SA fitness "+simuAnnealBest.getFitness() +" for length "+cList.numCities);
-			
+			*/
 			GeneticAlgo ga = new GeneticAlgo();
-			Chromosome gaBest = ga.run(100000000l, c, cList, .05, .5);
+			Chromosome gaBest = ga.run(3000000000l, cList, .05, .8);
 			System.out.println("GA fitness "+gaBest.getFitness() +" for length "+cList.numCities);
 		
 		} catch (FileNotFoundException e) {
