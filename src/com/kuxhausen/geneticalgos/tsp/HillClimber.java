@@ -22,9 +22,9 @@ public class HillClimber {
 				
 				Chromosome newS = null;
 				if(cf.m == Mutation.TWO_CITY_SHUFFLE){
-						s.doublePointShuffle();
+					newS = s.doublePointShuffle();
 				} else if(cf.m == Mutation.THREE_CITY_SHUFFLE){
-					s.tripplePointShuffle();
+					newS = s.tripplePointShuffle();
 				}
 				
 				double newFitness = newS.getFitness();
