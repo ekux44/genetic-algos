@@ -73,16 +73,26 @@ public class Chromosome implements Comparable<Chromosome>{
 	 */
 	private double calculateFitness(){
 		double distanceTraveled = 0;
+		//sum route that visits every city
 		for(int i = 1; i< cl.numCities; i++){
 			int a = route[i-1];
 			int b = route[i];
 			distanceTraveled+= Math.sqrt(Math.pow(cl.cityX[b]-cl.cityX[a], 2)+Math.pow(cl.cityY[b]-cl.cityY[a], 2));
 		}
+		//include edge that returns to the origin
+		int a = route[route.length-1];
+		int b = route[0];
+		distanceTraveled+= Math.sqrt(Math.pow(cl.cityX[b]-cl.cityX[a], 2)+Math.pow(cl.cityY[b]-cl.cityY[a], 2));
+		
 		return distanceTraveled;
 	}
 
 	@Override
 	public int compareTo(Chromosome o) {
 		return ((Double)this.getFitness()).compareTo((Double)o.getFitness());
+	}
+	
+	public CityList getCityList(){
+		return cl;
 	}
 }
