@@ -2,7 +2,7 @@ package com.kuxhausen.geneticalgos.tsp;
 
 import java.util.Random;
 
-public class Chromosome {
+public class Chromosome implements Comparable<Chromosome>{
 
 	/**
 	 * a list of city numbers in the order they occur in the route, 0 indexed
@@ -79,5 +79,10 @@ public class Chromosome {
 			distanceTraveled+= Math.sqrt(Math.pow(cl.cityX[b]-cl.cityX[a], 2)+Math.pow(cl.cityY[b]-cl.cityY[a], 2));
 		}
 		return distanceTraveled;
+	}
+
+	@Override
+	public int compareTo(Chromosome o) {
+		return ((Double)this.getFitness()).compareTo((Double)o.getFitness());
 	}
 }
