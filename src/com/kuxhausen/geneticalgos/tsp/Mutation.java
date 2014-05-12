@@ -1,5 +1,5 @@
 package com.kuxhausen.geneticalgos.tsp;
 
 public enum Mutation {
-	DoublePointShuffle, TripplePointShuffle
+	TWO_CITY_SHUFFLE, THREE_CITY_SHUFFLE
 }

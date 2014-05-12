@@ -1,13 +1,15 @@
 package com.kuxhausen.geneticalgos.tsp;
 
+import com.kuxhausen.geneticalgos.tsp.ConfigParser.Config;
+
 public class HillClimber {
 	
 	private boolean mSimulatedAnnealing;
 	public HillClimber(boolean isSimulatedAnnealingMode){
 		mSimulatedAnnealing = isSimulatedAnnealingMode;
 	}
-	public Chromosome climb(long timeAllocated, Mutation m, Chromosome initialS, double initialTemp, double alpha, double initalNumInnerLoops, double beta){
-		long stopTime = System.nanoTime()+timeAllocated;
+	public Chromosome climb(Config cf, Chromosome initialS, double initialTemp, double alpha, double initalNumInnerLoops, double beta){
+		long stopTime = System.nanoTime()+1000000000*cf.runTime;
 		Chromosome s = initialS;
 		double temp = initialTemp;
 		double numInnerLoops = initalNumInnerLoops;
@@ -16,9 +18,9 @@ public class HillClimber {
 		while(System.nanoTime()<stopTime){
 			for(int i = 0; i<numInnerLoops; i++){
 				Chromosome newS = null;
-				if(m == Mutation.DoublePointShuffle){
+				if(cf.m == Mutation.TWO_CITY_SHUFFLE){
 						s.doublePointShuffle();
-				} else if(m == Mutation.TripplePointShuffle){
+				} else if(cf.m == Mutation.THREE_CITY_SHUFFLE){
 					s.tripplePointShuffle();
 				}
 				

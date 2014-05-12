@@ -2,6 +2,8 @@ package com.kuxhausen.geneticalgos.tsp;
 
 import java.io.FileNotFoundException;
 
+import com.kuxhausen.geneticalgos.tsp.ConfigParser.Config;
+
 public class Runner {
 
 	/**
@@ -18,23 +20,26 @@ public class Runner {
 		
 		try {
 			CityList cList = DataParser.parse(filename);
-		
+			
+			Config cf = ConfigParser.parse("data/"+"config.txt");
+			
 			Chromosome c = new Chromosome(cList);
 			System.out.println("rand fitness "+c.getFitness() +" for length "+cList.numCities);
 			
-			/*
-			HillClimber fool = new HillClimber(false);
-			Chromosome foolishBest = fool.climb(3000000000l, c, 5000 * cList.numCities, .94, 20, 1.05);
-			System.out.println("foolish HC fitness "+foolishBest.getFitness() +" for length "+cList.numCities);
 			
-			HillClimber simA = new HillClimber(true);
-			Chromosome simuAnnealBest = simA.climb(3000000000l, c, 5000 * cList.numCities, .94, 20, 1.05);
-			System.out.println("SA fitness "+simuAnnealBest.getFitness() +" for length "+cList.numCities);
-			*/
-			GeneticAlgo ga = new GeneticAlgo();
-			Chromosome gaBest = ga.run(3000000000l, cList, Selection.Rank, Mutation.TripplePointShuffle, .05, Crossover.Order1, .8);
-			System.out.println("GA fitness "+gaBest.getFitness() +" for length "+cList.numCities);
-		
+			if(cf.st == SolverType.HC){
+				HillClimber fool = new HillClimber(false);
+				Chromosome foolishBest = fool.climb(cf, c, 5000 * cList.numCities, .94, 20, 1.05);
+				System.out.println("foolish HC fitness "+foolishBest.getFitness() +" for length "+cList.numCities);
+			} else if(cf.st == SolverType.SA){
+				HillClimber simA = new HillClimber(true);
+				Chromosome simuAnnealBest = simA.climb(cf, c, 5000 * cList.numCities, .94, 20, 1.05);
+				System.out.println("SA fitness "+simuAnnealBest.getFitness() +" for length "+cList.numCities);
+			} else if(cf.st == SolverType.GA){
+				GeneticAlgo ga = new GeneticAlgo();
+				Chromosome gaBest = ga.run(cf, cList, .05, .8);
+				System.out.println("GA fitness "+gaBest.getFitness() +" for length "+cList.numCities);
+			}
 		} catch (FileNotFoundException e) {
 			System.out.println("File Not Found");
 			

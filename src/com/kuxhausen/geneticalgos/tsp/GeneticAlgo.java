@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import com.kuxhausen.geneticalgos.tsp.ConfigParser.Config;
+
 public class GeneticAlgo {
 	
 	public static final int POP_SIZE = 400;
 	public static final int NUM_ELITE = 4;
 	
-	public Chromosome run(long timeAllocated, CityList cl, Selection s, Mutation m, double mutateRate, Crossover c, double crossoverRate){
-		long stopTime = System.nanoTime()+timeAllocated;
+	public Chromosome run(Config cf, CityList cl, double mutateRate, double crossoverRate){
+		long stopTime = System.nanoTime()+1000000000*cf.runTime;
 		
 		ArrayList<Chromosome> population = new ArrayList<Chromosome>(POP_SIZE);
 		
@@ -25,9 +27,9 @@ public class GeneticAlgo {
 			
 			//Perform selection
 			ArrayList<Chromosome> selected = null;
-			if(s == Selection.Roulette){
+			if(cf.s == Selection.ROULETTE){
 				selected = rouletteSelection(population, POP_SIZE-NUM_ELITE);
-			} else if(s == Selection.Rank){
+			} else if(cf.s == Selection.RANK){
 				selected = rankSelection(population, POP_SIZE-NUM_ELITE);
 			}
 			
@@ -36,10 +38,10 @@ public class GeneticAlgo {
 			for(int i = 0; i<selected.size(); i+=2){
 				
 				if(Math.random()<=crossoverRate){
-					if(c == Crossover.PMX){
+					if(cf.c == Crossover.PMX){
 						children.add(this.pmxCrossover(selected.get(i), selected.get(i+1)));
 						children.add(this.pmxCrossover(selected.get(i+1), selected.get(i)));
-					} else if(c == Crossover.Order1){
+					} else if(cf.c == Crossover.ORDER1){
 						children.add(this.order1Crossover(selected.get(i), selected.get(i+1)));
 						children.add(this.order1Crossover(selected.get(i+1), selected.get(i)));
 					}
@@ -53,9 +55,9 @@ public class GeneticAlgo {
 			//Mutate the children
 			for(Chromosome child : children){
 				if(Math.random()<=mutateRate){
-					if(m == Mutation.DoublePointShuffle){
+					if(cf.m == Mutation.TWO_CITY_SHUFFLE){
 						child.doublePointShuffle();
-					} else if(m == Mutation.TripplePointShuffle){
+					} else if(cf.m == Mutation.THREE_CITY_SHUFFLE){
 						child.tripplePointShuffle();
 					}
 				}
