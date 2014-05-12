@@ -8,15 +8,18 @@ public class HillClimber {
 	public HillClimber(boolean isSimulatedAnnealingMode){
 		mSimulatedAnnealing = isSimulatedAnnealingMode;
 	}
-	public Chromosome climb(Config cf, Chromosome initialS, double initialTemp, double alpha, double initalNumInnerLoops, double beta){
+	public Result climb(Config cf, Chromosome initialS, double initialTemp, double alpha, double initalNumInnerLoops, double beta){
 		long stopTime = System.nanoTime()+1000000000*cf.runTime;
 		Chromosome s = initialS;
 		double temp = initialTemp;
 		double numInnerLoops = initalNumInnerLoops;
 		double cachedFitness = s.getFitness();
+		int numPermutations = 0;
 		
 		while(System.nanoTime()<stopTime){
 			for(int i = 0; i<numInnerLoops; i++){
+				numPermutations++;
+				
 				Chromosome newS = null;
 				if(cf.m == Mutation.TWO_CITY_SHUFFLE){
 						s.doublePointShuffle();
@@ -36,6 +39,6 @@ public class HillClimber {
 			numInnerLoops*= beta;
 		}
 		
-		return s;
+		return new Result(s, numPermutations);
 	}
 }

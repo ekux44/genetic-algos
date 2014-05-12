@@ -28,7 +28,7 @@ public class Runner {
 			//System.out.println("rand fitness "+c.getFitness() +" for length "+cList.numCities);
 			
 			
-			Chromosome[] results = new Chromosome[5];
+			Result[] results = new Result[5];
 			if(cf.st == SolverType.HC){
 				HillClimber fool = new HillClimber(false);
 				
@@ -45,12 +45,18 @@ public class Runner {
 			}
 			
 			Arrays.sort(results);
-			System.out.println("Best Tour Length " + results[0].getFitness());
-			double sum = 0;
-			for(Chromosome chrom : results)
-				sum+=chrom.getFitness();
+			System.out.println("Best Tour Length " + results[0].chrome.getFitness());
+			double fitSum = 0;
+			for(Result r : results)
+				fitSum+=r.chrome.getFitness();
 			
-			System.out.println("Average Best Tour Length " + (sum/results.length));
+			System.out.println("Average Best Tour Length " + (fitSum/results.length));
+			
+			double genSum = 0;
+			for(Result r : results)
+				genSum+=r.numGenerations;
+			
+			System.out.println("Average Num Generations/Perturbations " + (genSum/results.length));
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("File Not Found");
@@ -59,5 +65,5 @@ public class Runner {
 			e.printStackTrace();
 		}
 	}
-
+	
 }

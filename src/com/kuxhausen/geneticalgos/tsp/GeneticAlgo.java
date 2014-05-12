@@ -11,8 +11,9 @@ public class GeneticAlgo {
 	public static final int POP_SIZE = 400;
 	public static final int NUM_ELITE = 4;
 	
-	public Chromosome run(Config cf, CityList cl, double mutateRate, double crossoverRate){
+	public Result run(Config cf, CityList cl, double mutateRate, double crossoverRate){
 		long stopTime = System.nanoTime()+1000000000*cf.runTime;
+		int numGenerations = 0;
 		
 		ArrayList<Chromosome> population = new ArrayList<Chromosome>(POP_SIZE);
 		
@@ -75,11 +76,13 @@ public class GeneticAlgo {
 			//resort the population at the end of each generation 
 			Collections.sort(population);
 			
+			numGenerations++;
+			
 			//print out generational best for debugging/tuning purposes
 			//System.out.println(population.get(0).getFitness());
 		}
 		
-		return population.get(0);
+		return new Result(population.get(0), numGenerations);
 	}
 	
 	/**
