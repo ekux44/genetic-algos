@@ -40,7 +40,8 @@ public class GeneticAlgo {
 						children.add(this.pmxCrossover(selected.get(i), selected.get(i+1)));
 						children.add(this.pmxCrossover(selected.get(i+1), selected.get(i)));
 					} else if(c == Crossover.Order1){
-						//TODO
+						children.add(this.order1Crossover(selected.get(i), selected.get(i+1)));
+						children.add(this.order1Crossover(selected.get(i+1), selected.get(i)));
 					}
 					
 				} else{
@@ -166,5 +167,38 @@ public class GeneticAlgo {
 		return child;
 	}
 	
+	
+	public Chromosome order1Crossover(Chromosome p1, Chromosome p2){
+		Chromosome child = new Chromosome(p1.route, p1.getCityList());
+		
+		//randomly generate basis crossover start point
+		int basisStart = (int) (Math.random()*(child.route.length/2));
+		
+		//use a half-length section of p1 as basis, 
+		int[] basis = new int[child.route.length/2];
+		
+		//insert the basis at the beginning of child, 
+		for(int i = 0; i< basis.length; i++){
+			basis[i] = p1.route[basisStart+i];
+			child.route[i] = basis[i];
+		}
+		
+		//now sort the basis for efficient search 
+		Arrays.sort(basis);
+		
+		//then insert the remaining cities as based on their ordering in p2
+		int childIndex = basis.length;
+		for(int j = 0; j< p2.route.length; j++){
+			if(Arrays.binarySearch(basis, p2.route[j])<0){
+				child.route[childIndex] = p2.route[j];
+				childIndex++;
+			}
+		}
+		
+		child.invalidateCache();
+		
+		//System.out.println(p1.getFitness() + " " + child.getFitness());
+		return child;
+	}
 	
 }
