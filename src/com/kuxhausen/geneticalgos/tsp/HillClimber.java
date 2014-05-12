@@ -6,7 +6,7 @@ public class HillClimber {
 	public HillClimber(boolean isSimulatedAnnealingMode){
 		mSimulatedAnnealing = isSimulatedAnnealingMode;
 	}
-	public Chromosome climb(long timeAllocated, Chromosome initialS, double initialTemp, double alpha, double initalNumInnerLoops, double beta){
+	public Chromosome climb(long timeAllocated, Mutation m, Chromosome initialS, double initialTemp, double alpha, double initalNumInnerLoops, double beta){
 		long stopTime = System.nanoTime()+timeAllocated;
 		Chromosome s = initialS;
 		double temp = initialTemp;
@@ -15,7 +15,13 @@ public class HillClimber {
 		
 		while(System.nanoTime()<stopTime){
 			for(int i = 0; i<numInnerLoops; i++){
-				Chromosome newS = s.doublePointChrossover();
+				Chromosome newS = null;
+				if(m == Mutation.DoublePointShuffle){
+						s.doublePointShuffle();
+				} else if(m == Mutation.TripplePointShuffle){
+					s.tripplePointShuffle();
+				}
+				
 				double newFitness = newS.getFitness();
 				if(!mSimulatedAnnealing
 						|| newFitness<cachedFitness

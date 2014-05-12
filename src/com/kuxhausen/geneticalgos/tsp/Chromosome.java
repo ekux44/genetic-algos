@@ -45,7 +45,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		cl = cList;
 	}
 	
-	public Chromosome doublePointChrossover(){
+	public Chromosome doublePointShuffle(){
 		Chromosome child = new Chromosome(route, cl);
 		int a = (int)(Math.random() * child.route.length);
 		int b = (int)(Math.random() * child.route.length);
@@ -58,7 +58,7 @@ public class Chromosome implements Comparable<Chromosome>{
 		return child;
 	}
 	
-	public Chromosome tripplePointChrossover(){
+	public Chromosome tripplePointShuffle(){
 		Chromosome child = new Chromosome(route, cl);
 		int a = (int)(Math.random() * child.route.length);
 		int b = (int)(Math.random() * child.route.length);

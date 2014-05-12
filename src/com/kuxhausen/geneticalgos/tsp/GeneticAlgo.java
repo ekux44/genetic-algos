@@ -9,7 +9,7 @@ public class GeneticAlgo {
 	public static final int POP_SIZE = 300;
 	public static final int NUM_ELITE = 4;
 	
-	public Chromosome run(long timeAllocated, CityList cl, double mutateRate, double crossoverRate){
+	public Chromosome run(long timeAllocated, CityList cl, Selection s, Mutation m, double mutateRate, Crossover c, double crossoverRate){
 		long stopTime = System.nanoTime()+timeAllocated;
 		
 		ArrayList<Chromosome> population = new ArrayList<Chromosome>(POP_SIZE);
@@ -24,15 +24,25 @@ public class GeneticAlgo {
 		while(System.nanoTime()<stopTime){
 			
 			//Perform selection
-			ArrayList<Chromosome> selected = rouletteSelection(population, POP_SIZE-NUM_ELITE);
+			ArrayList<Chromosome> selected = null;
+			if(s == Selection.Roulette){
+				selected = rouletteSelection(population, POP_SIZE-NUM_ELITE);
+			} else if(s == Selection.Rank){
+				selected = rankSelection(population, POP_SIZE-NUM_ELITE);
+			}
 			
 			//Reproduce (Crossover)
 			ArrayList<Chromosome> children = new ArrayList<Chromosome>(selected.size());
 			for(int i = 0; i<selected.size(); i+=2){
 				
 				if(Math.random()<=crossoverRate){
-					children.add(this.pmxCrossover(selected.get(i), selected.get(i+1)));
-					children.add(this.pmxCrossover(selected.get(i+1), selected.get(i)));
+					if(c == Crossover.PMX){
+						children.add(this.pmxCrossover(selected.get(i), selected.get(i+1)));
+						children.add(this.pmxCrossover(selected.get(i+1), selected.get(i)));
+					} else if(c == Crossover.Order1){
+						//TODO
+					}
+					
 				} else{
 					children.add(selected.get(i));
 					children.add(selected.get(i+1));
@@ -40,9 +50,13 @@ public class GeneticAlgo {
 			}
 			
 			//Mutate the children
-			for(Chromosome c : children){
+			for(Chromosome child : children){
 				if(Math.random()<=mutateRate){
-					c.doublePointChrossover();
+					if(m == Mutation.DoublePointShuffle){
+						child.doublePointShuffle();
+					} else if(m == Mutation.TripplePointShuffle){
+						child.tripplePointShuffle();
+					}
 				}
 			}
 			

@@ -32,7 +32,7 @@ public class Runner {
 			System.out.println("SA fitness "+simuAnnealBest.getFitness() +" for length "+cList.numCities);
 			*/
 			GeneticAlgo ga = new GeneticAlgo();
-			Chromosome gaBest = ga.run(3000000000l, cList, .05, .8);
+			Chromosome gaBest = ga.run(3000000000l, cList, Selection.Rank, Mutation.TripplePointShuffle, .05, Crossover.PMX, .8);
 			System.out.println("GA fitness "+gaBest.getFitness() +" for length "+cList.numCities);
 		
 		} catch (FileNotFoundException e) {
